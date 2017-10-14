@@ -7,19 +7,14 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 url = input('Enter URL: ')
-count = input("Enter count: ")
-position = input("Enter position: ")
+count = int(input("Enter count: "))
+position = int(input("Enter position: "))
+print("Retrieving: ", url)
 
-html = urlopen(url, context=ctx).read()
-
-soup = BeautifulSoup(html, "html.parser")
-
-tags = soup("a")
-hrefs = []
-#loop count number of times
 while count > 0:
-
-	for tag in tags:
-		hrefs.append(tag.get('href', None))
-
-print(hrefs)
+	html = urlopen(url, context=ctx).read()
+	soup = BeautifulSoup(html, "html.parser")
+	tags = soup.find_all('a')
+	url = tags[(position-1)].get('href')
+	count = count - 1
+	print("Retrieving: ", url)
